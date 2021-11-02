@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-light">
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item active" style="margin-right: 50px; margin-left: 41em">
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/index">
+                    <fmt:message key="link.home"/>
+                </a>
+            </li>
+            <li class="nav-item active mr-2">
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/user-cabinet">
+                    <fmt:message key="link.cabinet"/>
+                </a>
+            </li>
+            <li class="nav-item active mr-2">
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/tours">
+                    <fmt:message key="link.all_tours"/>
+                </a>
+            </li>
+            <li class="nav-item active mr-2">
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/orders">
+                    <fmt:message key="link.all_orders"/>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/index">
+                    <fmt:message key="link.all_users"/>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <span class="form-inline my-2 my-lg-0">
+            <span>
+                <fmt:message key="user"/>
+            </span>
+            <span class="ml-1">
+                ${sessionScope.User.getEmail()}
+            </span>
+            <span class="ml-3">
+                <fmt:message key="user.roles"/>
+            </span>
+            <span class="ml-1">
+                ${sessionScope.User.getRole()}
+            </span>
+            </span>
+            <li class="nav-item active ml-4">
+                <a class="nav-link" href="?lang=en">EN</a>
+            </li>
+            <li class="nav-item active mr-4">
+                <a class="nav-link" href="?lang=ua">UA</a>
+            </li>
+        </ul>
+
+        <core:if test="${sessionScope.User == null}">
+            <div class="form-inline my-2 my-lg-0">
+                <a href="${pageContext.request.contextPath}/app/registration"
+                   class="btn btn-outline-primary mr-3 my-2 my-sm-0">
+                    <fmt:message key="button.sign_up"/>
+                </a>
+                <a href="${pageContext.request.contextPath}/app/login"
+                   class="btn btn-primary  my-2 my-sm-0">
+                    <fmt:message key="button.sign_in"/>
+                </a>
+            </div>
+        </core:if>
+        <core:if test="${sessionScope.User != null}">
+            <div class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()">
+                <a href="${pageContext.request.contextPath}/app/logout"
+                   class="btn btn-primary my-2 my-sm-0">
+                    <fmt:message key="button.sign_out"/>
+                </a>
+
+            </div>
+        </core:if>
+    </div>
+</nav>
+</body>
+</html>
