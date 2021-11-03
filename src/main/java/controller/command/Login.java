@@ -10,11 +10,12 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 
-public class LoginCommand implements Command {
-    private final UserService userService;
+public class Login implements Command {
     private static final Logger log = LogManager.getLogger();
 
-    public LoginCommand(UserService userService) {
+    private final UserService userService;
+
+    public Login(UserService userService) {
         this.userService = userService;
     }
 
@@ -45,7 +46,7 @@ public class LoginCommand implements Command {
 
         if (user.getPassword().equals(password)) {
             HttpSession session = request.getSession();
-            session.setAttribute("User", user);
+            session.setAttribute("user", user);
             return "redirect:/index";
 
         } else {

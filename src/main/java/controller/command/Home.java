@@ -2,8 +2,8 @@ package controller.command;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class HomeCommand implements Command{
-    public HomeCommand() {
+public class Home implements Command{
+    public Home() {
     }
 
     @Override

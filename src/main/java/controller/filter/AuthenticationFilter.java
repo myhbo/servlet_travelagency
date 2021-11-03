@@ -28,7 +28,26 @@ public class AuthenticationFilter implements Filter {
             "/",
             "/index",
             "/logout",
-            "/tours"
+            "/tours",
+            "/users",
+            "/users/update",
+            "/users/ban",
+            "/users/unban",
+            "/user-cabinet"
+    );
+    private final List<String> managerList = Arrays.asList(
+            "/",
+            "/index",
+            "/logout",
+            "/tours",
+            "/user-cabinet"
+    );
+    private final List<String> userList = Arrays.asList(
+            "/",
+            "/index",
+            "/logout",
+            "/tours",
+            "/user-cabinet"
     );
 
     private final Map<Roles, List<String>> rolesMap = new HashMap<>();
@@ -37,6 +56,8 @@ public class AuthenticationFilter implements Filter {
     public void init(FilterConfig filterConfig)
             throws ServletException {
         rolesMap.put(Roles.ADMIN, adminList);
+        rolesMap.put(Roles.MANAGER, managerList);
+        rolesMap.put(Roles.USER, userList);
 
     }
 
@@ -52,7 +73,7 @@ public class AuthenticationFilter implements Filter {
         String requestURI = request.getRequestURI().replaceFirst(
                 request.getContextPath() + "/app", "");
 
-        User user = (User) session.getAttribute("User");
+        User user = (User) session.getAttribute("user");
         if (user == null) {
             if (anonymousList.contains(requestURI)) {
                 filterChain.doFilter(request, response);

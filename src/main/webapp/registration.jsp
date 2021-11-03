@@ -39,6 +39,7 @@
                             <fmt:message key="registration.email.label"/>
                         </span>
                         <input type="text"
+                               name="email"
                                value="${requestScope.user.email}"
                                placeholder="<fmt:message key="registration.email.placeholder"/>"
                                class="form-control"
@@ -57,6 +58,7 @@
                             <fmt:message key="registration.password.label"/>
                         </span>
                         <input type="password"
+                               name="password"
                                value="${requestScope.user.password}"
                                placeholder="<fmt:message key="registration.password.placeholder"/>"
                                class="form-control"
@@ -72,6 +74,7 @@
                             <fmt:message key="registration.fullname.label"/>
                         </span>
                         <input type="text"
+                               name="fullName"
                                value="${requestScope.user.fullName}"
                                placeholder="<fmt:message key="registration.fullname.placeholder"/>"
                                class="form-control"
