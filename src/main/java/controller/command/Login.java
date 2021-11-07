@@ -32,15 +32,15 @@ public class Login implements Command {
         Optional<User> userOptional = userService.findUserByEmail(email);
 
         if (!userOptional.isPresent()) {
-
+            request.setAttribute("error", true);
             log.info("No user with email " + email);
-
             return "/login.jsp";
         }
 
         User user = userOptional.get();
 
         if (!user.isEnabled()) {
+            request.setAttribute("error", true);
             return "/login.jsp";
         }
 
@@ -50,6 +50,7 @@ public class Login implements Command {
             return "redirect:/index";
 
         } else {
+            request.setAttribute("error", true);
             return "/login.jsp";
         }
     }

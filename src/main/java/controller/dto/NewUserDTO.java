@@ -1,7 +1,15 @@
 package controller.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class NewUserDTO {
+    @NotBlank
+    @Email(message = "{validation.user.email.invalid}")
     private String email;
+    @NotBlank
+    @Size(min = 5, message = "{validation.user.password}")
     private  String password;
     private  String fullName;
 

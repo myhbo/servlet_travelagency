@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="role" uri="myTags" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages"/>
@@ -44,12 +45,6 @@
                                placeholder="<fmt:message key="registration.email.placeholder"/>"
                                class="form-control"
                                required/>
-
-                        <span class="text-danger">
-                            <c:forEach items="${requestScope.errors.emailErrors}" var="error">
-                                ${error}
-                            </c:forEach>
-                        </span>
                     </label>
                 </div>
                 <div>
@@ -63,9 +58,6 @@
                                placeholder="<fmt:message key="registration.password.placeholder"/>"
                                class="form-control"
                                required/>
-                        <span class="text-danger">
-
-                        </span>
                     </label>
                 </div>
                 <div>
@@ -80,7 +72,10 @@
                                class="form-control"
                                required/>
                         <span class="text-danger">
-
+                             <c:forEach items="${requestScope.errors}" var="error">
+                                 ${error.message}
+                                 <br>
+                             </c:forEach>
                         </span>
                     </label>
                 </div>

@@ -1,14 +1,20 @@
 package controller.command;
 
 import controller.dto.NewUserDTO;
-import exception.DaoException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import model.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 
 public class Registration implements Command{
@@ -48,13 +54,26 @@ public class Registration implements Command{
                 .fullName(fullName)
                 .build();
 
-        try {
+        final Validator VALIDATOR =
+                Validation.byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(new ResourceBundleMessageInterpolator(
+                                new AggregateResourceBundleLocator(Arrays.asList("messages"))))
+                        .buildValidatorFactory()
+                        .getValidator();
+
+        Set<ConstraintViolation<NewUserDTO>> violations = VALIDATOR.validate(newUserDTO);
+
+
+
+        if (violations.isEmpty()) {
             userService.addNewUser(newUserDTO);
             log.info("Success registration");
-        } catch (DaoException e) {
-            log.info("Cant register");
+            return "redirect:/login";
+        } else {
+            request.setAttribute("user", newUserDTO);
+            request.setAttribute("errors", violations);
             return "/registration.jsp";
         }
-        return "redirect:/login";
     }
 }

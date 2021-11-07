@@ -108,7 +108,12 @@
 
                 </span>
             </div>
-
+            <span class="text-danger">
+                <c:forEach items="${requestScope.errors}" var="error">
+                    ${error.message}
+                    <br>
+                </c:forEach>
+            </span>
             <div style="padding-top: 10px; margin-right: 150px; margin-left: 150px">
                 <input class="btn btn-primary"
                        value="<fmt:message key="tours.update.button.submit"/>"

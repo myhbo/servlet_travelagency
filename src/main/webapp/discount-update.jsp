@@ -5,8 +5,7 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages"/>
 
-<html lang="en"
->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Set discount</title>
@@ -43,7 +42,10 @@
                        required/>
             </div>
             <span class="text-danger">
-
+                <c:forEach items="${requestScope.errors}" var="error">
+                    ${error.message}
+                    <br>
+                </c:forEach>
             </span>
             <div class="row" style="justify-content: center; margin-top: 20px">
                 <input class="btn btn-primary"

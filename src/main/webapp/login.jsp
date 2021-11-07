@@ -15,7 +15,7 @@
 <body>
 <%@include file="navbar.jspf" %>
 
-<form style="width: 550px" class="form-signin container"   action="${pageContext.request.contextPath}/app/login" method="post">
+<form style="width: 600px" class="form-signin container"   action="${pageContext.request.contextPath}/app/login" method="post">
     <h1 class="mb-3 font-weight-normal" >
         <fmt:message key="login.header"/>
     </h1>
@@ -61,6 +61,7 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">
         <fmt:message key="button.sign_in"/>
     </button>
+
 </form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

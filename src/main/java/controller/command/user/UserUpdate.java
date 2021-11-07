@@ -1,13 +1,19 @@
 package controller.command.user;
 
 import controller.command.Command;
+import controller.dto.TourDTO;
 import controller.dto.UserDTO;
 import exception.DaoException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import model.entity.User;
 import model.entity.enums.Roles;
 import model.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -64,15 +70,29 @@ public class UserUpdate implements Command {
                 .fullName(fullName)
                 .roles(getRoles(roles))
                 .build();
-        try {
+
+        final Validator VALIDATOR =
+                Validation.byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(new ResourceBundleMessageInterpolator(
+                                new AggregateResourceBundleLocator(Arrays.asList("messages"))))
+                        .buildValidatorFactory()
+                        .getValidator();
+
+        Set<ConstraintViolation<UserDTO>> violations = VALIDATOR.validate(userDTO);
+
+        log.info("try to set discount");
+
+        if (violations.isEmpty()) {
             userService.updateUser(userDTO);
-            log.info("updated user");
-        } catch (DaoException e) {
+
+            return "redirect:/users";
+        } else {
             request.setAttribute("user", userDTO);
             request.setAttribute("roles", Roles.values());
+            request.setAttribute("errors", violations);
             return "/user-update.jsp";
         }
-        return "redirect:/users";
     }
     private Set<Roles> getRoles(String[] roles) {
         if (roles != null) {

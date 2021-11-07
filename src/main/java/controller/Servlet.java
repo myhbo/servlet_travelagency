@@ -9,14 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.io.IOException;
 
 
 public class Servlet extends HttpServlet {
+
     private static final Logger logger = LogManager.getLogger();
 
     private final CommandMapper commandMapper = CommandMapper.getInstance();

@@ -1,13 +1,23 @@
 package controller.dto;
 
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import model.entity.enums.Roles;
 
 import java.util.Set;
 
 public class UserDTO {
     private long id;
+    @NotBlank
+    @Email(message = "{validation.user.email.invalid}")
     private String email;
+    @NotBlank
+    @Size(min = 5, message = "{validation.user.password}")
     private String password;
+    @NotBlank
+    @Size(max = 50, message = "{validation.user.full.name}")
     private String fullName;
     private Set<Roles> roles;
 

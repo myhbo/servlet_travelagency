@@ -4,16 +4,23 @@ package controller.command.tour;
 import controller.command.Command;
 import controller.dto.TourDTO;
 import exception.DaoException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import model.entity.Tour;
 import model.entity.enums.HotelType;
 import model.entity.enums.TourType;
 import model.service.TourService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class TourUpdate implements Command {
     public static final Logger log = LogManager.getLogger();
@@ -73,10 +80,28 @@ public class TourUpdate implements Command {
                 .price(Double.parseDouble(price))
                 .build();
 
-        log.info("tour almost updated");
+        final Validator VALIDATOR =
+                Validation.byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(new ResourceBundleMessageInterpolator(
+                                new AggregateResourceBundleLocator(Arrays.asList("messages"))))
+                        .buildValidatorFactory()
+                        .getValidator();
 
-        tourService.updateTour(id, tourDTO);
+        Set<ConstraintViolation<TourDTO>> violations = VALIDATOR.validate(tourDTO);
 
-        return "redirect:/tours";
+        log.info("try to set discount");
+
+        if (violations.isEmpty()) {
+            tourService.updateTour(id, tourDTO);
+
+            return "redirect:/tours";
+        } else {
+            request.setAttribute("tourTypes", TourType.values());
+            request.setAttribute("hotelTypes", HotelType.values());
+            request.setAttribute("tour", tourDTO);
+            request.setAttribute("errors", violations);
+            return "/tour-update.jsp";
+        }
     }
 }

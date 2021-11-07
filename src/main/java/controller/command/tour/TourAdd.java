@@ -1,16 +1,26 @@
 package controller.command.tour;
 
 import controller.command.Command;
+import controller.dto.OrderDTO;
 import controller.dto.TourDTO;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import model.entity.Order;
+import model.entity.Tour;
 import model.entity.enums.HotelType;
 import model.entity.enums.TourType;
 import model.service.TourService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class TourAdd implements Command {
     public static final Logger log = LogManager.getLogger();
@@ -55,8 +65,26 @@ public class TourAdd implements Command {
                 .price(Double.parseDouble(price))
                 .build();
 
-        tourService.addTour(tourDTO);
-        log.info("tour created command");
-        return "redirect:/tours";
+        final Validator VALIDATOR =
+                Validation.byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(new ResourceBundleMessageInterpolator(
+                                new AggregateResourceBundleLocator(Arrays.asList("messages"))))
+                        .buildValidatorFactory()
+                        .getValidator();
+
+        Set<ConstraintViolation<TourDTO>> violations = VALIDATOR.validate(tourDTO);
+
+        log.info("try to set discount");
+
+        if (violations.isEmpty()) {
+            tourService.addTour(tourDTO);
+            log.info("tour created command");
+            return "redirect:/tours";
+        } else {
+            request.setAttribute("errors", violations);
+            return "/tour-add.jsp";
+        }
+
     }
 }

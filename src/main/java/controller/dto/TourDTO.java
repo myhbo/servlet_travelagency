@@ -1,14 +1,21 @@
 package controller.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import model.entity.enums.HotelType;
 import model.entity.enums.TourType;
 
 public class TourDTO {
     private long id;
+    @NotBlank
+    @Size(min = 5, max = 100, message = "{validation.tour.name}")
     private String name;
     private TourType tourType;
     private HotelType hotelType;
+    @Positive(message = "{validation.tour.group}")
     private  int groupSize;
+    @Positive(message = "{validation.tour.price}")
     private double price;
     private boolean isHot;
 

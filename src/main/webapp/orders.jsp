@@ -60,7 +60,7 @@
                 </th>
                 <th>
                     <a href="${pageContext.request.contextPath}/app/orders?page=${requestScope.currentPage}&size=${requestScope.pageSize}&sortCol=${'orders.discount'}&sortDir=${(requestScope.sortDir != 'ASC') ? 'ASC' : 'DESC'}">
-                        <fmt:message key="orders.discount"/>
+                        <fmt:message key="orders.discount"/>, %
                     </a>
                 </th>
                 <th class="text-center">
@@ -209,7 +209,7 @@
                                 <fmt:message key="pager.next"/>
                             </a>
                         </li>
-                        <li class="page-item ${requestScope.totalPages == 0 ? 'disabled' : ''}" >
+                        <li class="page-item ${requestScope.currentPage == requestScope.totalPages - 1 ? 'disabled' : ''}" >
                             <a class="page-link"
                                href="${pageContext.request.contextPath}/app/orders?page=${requestScope.totalPages - 1}&size=${requestScope.pageSize}&sortCol=${requestScope.sortCol}&sortDir=${requestScope.sortDir}">
                                 <fmt:message key="pager.last"/>

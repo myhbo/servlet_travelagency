@@ -1,8 +1,8 @@
 package model.service;
 
-import controller.command.order.OrderMarkRejected;
 import controller.dto.OrderDTO;
 import exception.DaoException;
+import jakarta.validation.Valid;
 import model.dao.*;
 import model.entity.Order;
 import model.entity.Tour;
@@ -11,10 +11,8 @@ import model.entity.enums.OrderStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.validation.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class OrderService {
     private static final Logger log = LogManager.getLogger();
@@ -131,12 +129,6 @@ public class OrderService {
                     .price(order.getTour().getPrice() * ((100 - orderDTO.getDiscount())/100))
                     .discount(orderDTO.getDiscount())
                     .build();
-
-            ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-            Validator validator = validatorFactory.getValidator();
-            Set<ConstraintViolation<Order>> validate = validator.validate(orderBuilder);
-
-            validatorFactory.close();
 
             orderDao.update(orderBuilder);
             userDao.update(user);

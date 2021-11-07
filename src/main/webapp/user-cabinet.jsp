@@ -68,7 +68,7 @@
                 </role:hasRole>
                 <th><fmt:message key="users.cabinet.orders.tour"/></th>
                 <th><fmt:message key="users.cabinet.orders.price"/></th>
-                <th><fmt:message key="users.cabinet.orders.discount"/></th>
+                <th><fmt:message key="users.cabinet.orders.discount"/>, %</th>
                 <th class="text-center"><fmt:message key="users.cabinet.orders.status"/></th>
             </tr>
             </thead>

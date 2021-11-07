@@ -1,6 +1,7 @@
 package model.dao.implementation;
 
 import exception.DaoException;
+import jakarta.validation.Valid;
 import model.dao.OrderDao;
 import model.dao.implementation.mapper.OrderMapper;
 import model.dao.implementation.mapper.TourMapper;
@@ -70,7 +71,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public void update(Order order) {
+    public void update(@Valid Order order) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("order.update"))) {
             fillOrderStatement(order, preparedStatement);

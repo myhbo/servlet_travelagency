@@ -1,9 +1,13 @@
 package controller.dto;
 
-import javax.validation.constraints.Size;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 public class OrderDTO {
     private long id;
+    @Min(value = 0, message = "{validation.set.discount.min}")
+    @Max(value = 100, message = "{validation.set.discount.max}")
     private double discount;
     private double price;
 

@@ -92,7 +92,12 @@
                         </c:forEach>
                     </select>
                 </div>
-
+                <span class="text-danger">
+                    <c:forEach items="${requestScope.errors}" var="error">
+                        ${error.message}
+                        <br>
+                    </c:forEach>
+                </span>
                 <div class="row" style="justify-content: center; padding-top: 10px">
 
                     <input class="btn btn-primary"

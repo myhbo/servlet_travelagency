@@ -1,8 +1,8 @@
 package model.entity;
 
+import jakarta.validation.constraints.Size;
 import model.entity.enums.OrderStatus;
 
-import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Order {
