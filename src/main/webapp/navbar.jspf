@@ -14,26 +14,32 @@
                     <fmt:message key="link.home"/>
                 </a>
             </li>
+            <c:if test="${sessionScope.user != null}">
             <li class="nav-item active mr-2">
                 <a class="nav-link" href="${pageContext.request.contextPath}/app/user-cabinet">
                     <fmt:message key="link.cabinet"/>
                 </a>
             </li>
+            </c:if>
             <li class="nav-item active mr-2">
                 <a class="nav-link" href="${pageContext.request.contextPath}/app/tours">
                     <fmt:message key="link.all_tours"/>
                 </a>
             </li>
+            <role:hasRole role="MANAGER">
             <li class="nav-item active mr-2">
                 <a class="nav-link" href="${pageContext.request.contextPath}/app/orders">
                     <fmt:message key="link.all_orders"/>
                 </a>
             </li>
+            </role:hasRole>
+            <role:hasRole role="ADMIN">
             <li class="nav-item active">
                 <a class="nav-link" href="${pageContext.request.contextPath}/app/users">
                     <fmt:message key="link.all_users"/>
                 </a>
             </li>
+            </role:hasRole>
         </ul>
 
         <ul class="navbar-nav ml-auto">
@@ -42,13 +48,13 @@
                 <fmt:message key="user"/>
             </span>
             <span class="ml-1">
-                ${sessionScope.User.getEmail()}
+                ${sessionScope.user.getEmail()}
             </span>
             <span class="ml-3">
                 <fmt:message key="user.roles"/>
             </span>
             <span class="ml-1">
-                ${sessionScope.User.getRole()}
+                ${sessionScope.user.getRole()}
             </span>
             </span>
             <li class="nav-item active ml-4">
@@ -59,7 +65,7 @@
             </li>
         </ul>
 
-        <core:if test="${sessionScope.User == null}">
+        <c:if test="${sessionScope.user == null}">
             <div class="form-inline my-2 my-lg-0">
                 <a href="${pageContext.request.contextPath}/app/registration"
                    class="btn btn-outline-primary mr-3 my-2 my-sm-0">
@@ -70,8 +76,8 @@
                     <fmt:message key="button.sign_in"/>
                 </a>
             </div>
-        </core:if>
-        <core:if test="${sessionScope.User != null}">
+        </c:if>
+        <c:if test="${sessionScope.user != null}">
             <div class="form-inline my-2 my-lg-0">
                 <a href="${pageContext.request.contextPath}/app/logout"
                    class="btn btn-primary my-2 my-sm-0">
@@ -79,7 +85,7 @@
                 </a>
 
             </div>
-        </core:if>
+        </c:if>
     </div>
 </nav>
 </body>

@@ -40,7 +40,9 @@ public class UserUpdate implements Command {
         try {
             id = Long.parseLong(request.getParameter("id"));
         } catch (NumberFormatException e) {
-
+            return "/404.jsp";
+        } catch (Exception e) {
+            return "/500.jsp";
         }
 
         String email = request.getParameter("email");
@@ -62,11 +64,9 @@ public class UserUpdate implements Command {
                 .fullName(fullName)
                 .roles(getRoles(roles))
                 .build();
-
-
         try {
             userService.updateUser(userDTO);
-            log.info("updated userupdate");
+            log.info("updated user");
         } catch (DaoException e) {
             request.setAttribute("user", userDTO);
             request.setAttribute("roles", Roles.values());

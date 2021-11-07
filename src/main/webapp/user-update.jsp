@@ -1,4 +1,4 @@
-<%@taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
@@ -78,27 +78,22 @@
                         </span>
                     </label>
                 </div>
-                <div class="container-fluid" style="justify-content: center">
-                    <ul>
-                        <core:forEach items="${requestScope.roles}" var="role">
-                            <li>
-                                <input type="checkbox"
-                                       class="form-check-input check"
-                                       name="roles"
-                                        <core:if test="${requestScope.user.getRole().contains(role)}">
-                                            checked
-                                        </core:if>
-                                       value="${role.name()}"
-                                       id="role${role.ordinal()}"/>
-                                <label for="role${role.ordinal()}" class="form-check-label">
-                                        ${role}
-                                </label>
-                            </li>
-                        </core:forEach>
-                    </ul>
+                <div>
+                    <label for="roles">
+                        <fmt:message key="user.roles"/>
+                    </label>
+                    <select class="form-control"
+                            id="roles"
+                            name="roles">
+                        <c:forEach items="${requestScope.roles}" var="role">
+                            <option value="${role.toString()}">
+                                ${role.toString()}
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
 
-                <div class="row" style="justify-content: center">
+                <div class="row" style="justify-content: center; padding-top: 10px">
 
                     <input class="btn btn-primary"
                            value="<fmt:message key="users.update.button.submit"/>"
@@ -115,12 +110,5 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.check').click(function() {
-            $('.check').not(this).prop('checked', false);
-        });
-    });
-</script>
 </body>
 </html>

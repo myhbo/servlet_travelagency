@@ -1,5 +1,6 @@
-<%@taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="role" uri="myTags" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages"/>
@@ -40,45 +41,89 @@
 </div>
 <hr>
 
-<%--<div class="row" style="justify-content: center; margin-top: 50px">
+<div class="row" style="justify-content: center; margin-top: 50px">
 
-    <div th:if="${user.orders.isEmpty()}">
-        <h4 class="display-5" th:text="#{users.cabinet.orders.empty}"></h4>
+    <div>
+        <c:if test="${requestScope.orders.isEmpty()}">
+            <h4 class="display-5">
+                <fmt:message key="users.cabinet.orders.empty"/>
+            </h4>
+        </c:if>
     </div>
-    <div th:unless="${user.orders.isEmpty()}">
-        <h4 class="display-5" th:text="#{users.cabinet.orders.header}"></h4>
+    <div>
+        <c:if test="${!requestScope.orders.isEmpty()}">
+            <h4 class="display-5">
+                <fmt:message key="users.cabinet.orders.header"/>
+            </h4>
+        </c:if>
     </div>
 </div>
 <div class="container">
-    <table th:unless="${user.orders.isEmpty()}" class="table mt-20">
-        <thead>
-        <tr>
-            <th sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')" th:text="#{users.cabinet.orders.id}"></th>
-            <th th:text="#{users.cabinet.orders.tour}"></th>
-            <th th:text="#{users.cabinet.orders.price}"></th>
-            <th th:text="#{users.cabinet.orders.discount}"></th>
-            <th th:text="#{users.cabinet.orders.status}" class="text-center"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="order : ${user.orders}">
-            <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')">
-                <span th:text="${order.id}"></span></td>
-            <td><span th:text="${order.tour.name}"></span></td>
-            <td><span th:text="${#numbers.formatDecimal(order.price,1,1)}"></span></td>
-            <td><span th:text="${#numbers.formatDecimal(order.discount,1,1)}"></span></td>
-            <td class="text-center" style="width: 15%">
-                <button class="btn btn-info active btn-block" th:if="${order.isProcessing()}"
-                        th:text="#{users.cabinet.orders.status.processing}"></button>
-                <button class="btn btn-success active btn-block" th:if="${order.isConfirmed()}"
-                        th:text="#{users.cabinet.orders.status.confirmed}"></button>
-                <button class="btn btn-danger active btn-block" th:if="${order.isRejected()}"
-                        th:text="#{users.cabinet.orders.status.rejected}"></button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>--%>
+    <c:if test="${!requestScope.orders.isEmpty()}">
+        <table class="table mt-20">
+            <thead>
+            <tr>
+                <role:hasRole role="MANAGER">
+                    <th><fmt:message key="users.cabinet.orders.id"/></th>
+                </role:hasRole>
+                <th><fmt:message key="users.cabinet.orders.tour"/></th>
+                <th><fmt:message key="users.cabinet.orders.price"/></th>
+                <th><fmt:message key="users.cabinet.orders.discount"/></th>
+                <th class="text-center"><fmt:message key="users.cabinet.orders.status"/></th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${requestScope.user.orders}" var="order">
+                <tr>
+                    <role:hasRole role="MANAGER">
+                        <td>
+                            <span>
+                                    ${order.id}
+                            </span>
+                        </td>
+                    </role:hasRole>
+                    <td>
+                        <span>
+                                ${order.tour.name}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            <fmt:formatNumber type="number"
+                                              maxFractionDigits="2"
+                                              value="${order.price}"/>
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            <fmt:formatNumber type="number"
+                                              maxFractionDigits="2"
+                                              value="${order.discount}"/>
+                        </span>
+                    </td>
+                    <td class="text-center" style="width: 15%">
+                        <c:if test="${order.processing}">
+                            <button class="btn btn-info active btn-block">
+                                <fmt:message key="users.cabinet.orders.status.processing"/>
+                            </button>
+                        </c:if>
+                        <c:if test="${order.confirmed}">
+                            <button class="btn btn-success active btn-block">
+                                <fmt:message key="users.cabinet.orders.status.confirmed"/>
+                            </button>
+                        </c:if>
+                        <c:if test="${order.rejected}">
+                            <button class="btn btn-danger active btn-block">
+                                <fmt:message key="users.cabinet.orders.status.rejected"/>
+                            </button>
+                        </c:if>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </c:if>
+</div>
 
 
 

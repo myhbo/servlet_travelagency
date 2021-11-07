@@ -3,7 +3,11 @@ package model.dao.implementation;
 import exception.DaoException;
 import model.dao.DaoConnection;
 import model.dao.UserDao;
+import model.dao.implementation.mapper.OrderMapper;
+import model.dao.implementation.mapper.TourMapper;
 import model.dao.implementation.mapper.UserMapper;
+import model.entity.Order;
+import model.entity.Tour;
 import model.entity.User;
 import model.entity.enums.Roles;
 import org.apache.logging.log4j.LogManager;
@@ -43,6 +47,13 @@ public class JDBCUserDao implements UserDao {
         Map<Long, User> userMap = new LinkedHashMap<>();
         UserMapper userMapper = new UserMapper();
 
+        Map<Long, Tour> tourMap = new LinkedHashMap<>();
+        TourMapper tourMapper = new TourMapper();
+
+        Map<Long, Order> orderMap = new LinkedHashMap<>();
+        OrderMapper orderMapper = new OrderMapper();
+
+
         while (resultSet.next()) {
             User user = userMapper.getFromResultSet(resultSet);
             userMapper.makeUnique(userMap, user);
@@ -58,6 +69,25 @@ public class JDBCUserDao implements UserDao {
                 while (userRolesRS.next()) {
                     Roles role = Roles.valueOf(userRolesRS.getString("user_roles.role"));
                     user.getRole().add(role);
+                }
+            }
+            try (PreparedStatement ordersPS = connection.prepareStatement(
+                    resourceBundle.getString("user.join.orders.tours"))) {
+                ordersPS.setLong(1, user.getId());
+                ResultSet userOrdersResultSet = ordersPS.executeQuery();
+
+                while (userOrdersResultSet.next()) {
+                    Order order = orderMapper.getFromResultSet(userOrdersResultSet);
+                    Tour tour = tourMapper.getFromResultSet(userOrdersResultSet);
+
+                    order = orderMapper.makeUnique(orderMap, order);
+                    tour = tourMapper.makeUnique(tourMap, tour);
+
+                    if ((order.getId() != 0) && !user.getOrders().contains(order)) {
+                        order.setUser(user);
+                        order.setTour(tour);
+                        user.getOrders().add(order);
+                    }
                 }
             }
         }
@@ -83,6 +113,7 @@ public class JDBCUserDao implements UserDao {
                     rolesPS.executeUpdate();
                 }
             } catch (SQLException e) {
+                e.printStackTrace();
                 throw new DaoException(e);
             }
         } catch (SQLException e) {

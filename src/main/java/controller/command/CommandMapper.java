@@ -1,6 +1,10 @@
 package controller.command;
 
+import controller.command.order.*;
+import controller.command.tour.*;
 import controller.command.user.*;
+import model.service.OrderService;
+import model.service.TourService;
 import model.service.UserService;
 
 import java.util.HashMap;
@@ -26,6 +30,8 @@ public class CommandMapper {
 
     private CommandMapper() {
         final UserService userService = new UserService();
+        final TourService tourService = new TourService();
+        final OrderService orderService = new OrderService();
 
         commandMap.put("/index", new Home());
         commandMap.put("/login", new Login(userService));
@@ -37,6 +43,18 @@ public class CommandMapper {
         commandMap.put("/users/unban", new UserUnban(userService));
         commandMap.put("/user-cabinet", new UserCabinet(userService));
         commandMap.put("/users/update", new UserUpdate(userService));
+
+        commandMap.put("/tours", new Tours(tourService));
+        commandMap.put("/tours/add", new TourAdd(tourService));
+        commandMap.put("/tours/update", new TourUpdate(tourService));
+        commandMap.put("/tours/delete", new TourDelete(tourService));
+        commandMap.put("/tours/toggle-hot", new TourToggleHot(tourService));
+
+        commandMap.put("/orders", new Orders(orderService));
+        commandMap.put("/orders/add", new OrderAdd(orderService));
+        commandMap.put("/orders/mark-confirmed", new OrderMarkConfirmed(orderService));
+        commandMap.put("/orders/mark-rejected", new OrderMarkRejected(orderService));
+        commandMap.put("/orders/set-discount", new OrderSetDiscount(orderService));
     }
     public Command getCommand(String command) {
         return commandMap.getOrDefault(command, defaultValue -> "/index.jsp");

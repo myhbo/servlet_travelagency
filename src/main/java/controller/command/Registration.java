@@ -49,7 +49,7 @@ public class Registration implements Command{
                 .build();
 
         try {
-            userService.makeNewUser(newUserDTO);
+            userService.addNewUser(newUserDTO);
             log.info("Success registration");
         } catch (DaoException e) {
             log.info("Cant register");

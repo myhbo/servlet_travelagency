@@ -1,4 +1,4 @@
-<%@taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
@@ -46,9 +46,9 @@
                                required/>
 
                         <span class="text-danger">
-                            <core:forEach items="${requestScope.errors.emailErrors}" var="error">
+                            <c:forEach items="${requestScope.errors.emailErrors}" var="error">
                                 ${error}
-                            </core:forEach>
+                            </c:forEach>
                         </span>
                     </label>
                 </div>

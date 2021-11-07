@@ -2,6 +2,7 @@ package model.service;
 
 import controller.dto.NewUserDTO;
 import controller.dto.UserDTO;
+import exception.EmailNotUniqueException;
 import model.dao.DaoConnection;
 import model.dao.DaoFactory;
 import model.dao.UserDao;
@@ -14,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 
 
 public class UserService {
@@ -42,7 +42,7 @@ public class UserService {
         }
     }
 
-    public void makeNewUser(NewUserDTO newUserDTO) {
+    public void addNewUser(NewUserDTO newUserDTO) {
         User user = User.builder()
                 .email(newUserDTO.getEmail())
                 .password(newUserDTO.getPassword())
@@ -54,7 +54,7 @@ public class UserService {
             UserDao userDao = daoFactory.createUserDao(connection);
             userDao.create(user);
         } catch (DaoException e) {
-
+            throw new EmailNotUniqueException();
         }
     }
 
@@ -76,7 +76,7 @@ public class UserService {
             userDao.update(user);
             log.info("updated userservice");
         } catch (DaoException e) {
-
+            throw new EmailNotUniqueException();
         }
     }
 

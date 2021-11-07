@@ -2,8 +2,7 @@ package model.entity;
 
 import model.entity.enums.Roles;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class User {
     private long id;
@@ -12,6 +11,7 @@ public class User {
     private String fullName;
     private boolean enabled;
     private Set<Roles> roles = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 
     public static Builder builder() {
         return new Builder();
@@ -112,5 +112,26 @@ public class User {
 
     public void setRole(Set<Roles> roles) {
         this.roles = roles;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && enabled == user.enabled && email.equals(user.email) && password.equals(user.password) && fullName.equals(user.fullName) && roles.equals(user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, fullName, enabled, roles);
     }
 }

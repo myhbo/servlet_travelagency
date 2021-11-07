@@ -38,6 +38,7 @@ public class Users implements Command {
         request.setAttribute("currentPage", page);
         request.setAttribute("pageSize", size);
         request.setAttribute("totalPages", userPages);
+        request.setAttribute("pagerSizes", new int[] {5, 10, 50, 100});
         return "/users.jsp";
     }
 }

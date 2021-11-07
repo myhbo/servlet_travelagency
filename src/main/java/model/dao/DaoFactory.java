@@ -17,6 +17,8 @@ public abstract class DaoFactory {
     }
 
     public abstract UserDao createUserDao(DaoConnection connection);
+    public abstract TourDao createTourDao(DaoConnection connection);
+    public abstract OrderDao createOrderDao(DaoConnection connection);
 
     public abstract DaoConnection getConnection();
 }

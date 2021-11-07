@@ -18,7 +18,9 @@ public class UserUnban implements Command {
         try {
             id = Long.parseLong(request.getParameter("id"));
         } catch (NumberFormatException e) {
-
+            return "/404.jsp";
+        } catch (IllegalAccessError e) {
+            return "/500.jsp";
         }
         userService.unbanUser(id);
         return "redirect:/users";

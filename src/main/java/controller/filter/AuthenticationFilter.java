@@ -2,6 +2,8 @@ package controller.filter;
 
 import model.entity.User;
 import model.entity.enums.Roles;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 
 public class AuthenticationFilter implements Filter {
+    private static final Logger log = LogManager.getLogger();
 
     private final List<String> anonymousList = Arrays.asList(
             "/",
@@ -33,21 +36,37 @@ public class AuthenticationFilter implements Filter {
             "/users/update",
             "/users/ban",
             "/users/unban",
-            "/user-cabinet"
+            "/user-cabinet",
+            "/tours/add",
+            "/tours/update",
+            "/tours/delete",
+            "/tours/toggle-hot",
+            "/orders",
+            "/orders/add",
+            "/orders/mark-confirmed",
+            "/orders/mark-rejected",
+            "/orders/set-discount"
     );
     private final List<String> managerList = Arrays.asList(
             "/",
             "/index",
             "/logout",
             "/tours",
-            "/user-cabinet"
+            "/user-cabinet",
+            "/tours/toggle-hot",
+            "/orders",
+            "/orders/add",
+            "/orders/mark-confirmed",
+            "/orders/mark-rejected",
+            "/orders/set-discount"
     );
     private final List<String> userList = Arrays.asList(
             "/",
             "/index",
             "/logout",
             "/tours",
-            "/user-cabinet"
+            "/user-cabinet",
+            "/orders/add"
     );
 
     private final Map<Roles, List<String>> rolesMap = new HashMap<>();
@@ -90,6 +109,10 @@ public class AuthenticationFilter implements Filter {
                 .collect(Collectors.toList());
         if (requestedLink.contains(requestURI)) {
             filterChain.doFilter(request, response);
+        } else {
+            response.setStatus(403);
+            request.getRequestDispatcher("/403.jsp").forward(request, response);
+            log.info(user.getEmail() + "try to access forbidden page");
         }
     }
 
