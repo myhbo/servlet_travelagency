@@ -19,6 +19,15 @@ public class TourService {
 
     private final DaoFactory daoFactory = DaoFactory.getInstance();
 
+    /**
+     *
+     * @param page number of specific page in a query
+     * @param size amount of items on the page
+     * @param columnToSort column of items to sort it
+     * @param directionToSort direction to sort a column
+     * @return list of specific tours that we get with a query,
+     * parameters of which we provide
+     */
     public List<Tour> findAllToursPageable(int page,
                                            int size,
                                            String columnToSort,
@@ -42,7 +51,7 @@ public class TourService {
         return null;
     }
 
-    public void addTour(TourDTO tourDTO) {
+    public boolean addTour(TourDTO tourDTO) {
         Tour tour = Tour.builder()
                 .name(tourDTO.getName())
                 .tourType(tourDTO.getTourType())
@@ -56,12 +65,14 @@ public class TourService {
 
             tourDao.create(tour);
             log.info("tour create service");
+            return true;
         } catch (DaoException e) {
             log.info("tour cannot create service");
+            return false;
         }
     }
 
-    public void updateTour(long id, TourDTO tourDTO) {
+    public boolean updateTour(long id, TourDTO tourDTO) {
         Tour tour = Tour.builder()
                 .id(id)
                 .name(tourDTO.getName())
@@ -73,8 +84,9 @@ public class TourService {
         try (DaoConnection connection = daoFactory.getConnection()) {
             TourDao tourDao = daoFactory.createTourDao(connection);
             tourDao.update(tour);
+            return true;
         } catch (DaoException e) {
-
+            return false;
         }
     }
 
@@ -87,12 +99,13 @@ public class TourService {
         }
     }
 
-    public void toggleHot(long id) {
+    public boolean toggleHot(long id) {
         try (DaoConnection connection = daoFactory.getConnection()) {
             TourDao tourDao = daoFactory.createTourDao(connection);
             Tour tour = findTourById(id);
             tour.toggleHot();
             tourDao.toggleHot(tour);
+            return true;
         }
     }
 

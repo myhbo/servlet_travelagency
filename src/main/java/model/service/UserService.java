@@ -42,7 +42,7 @@ public class UserService {
         }
     }
 
-    public void addNewUser(NewUserDTO newUserDTO) {
+    public boolean addNewUser(NewUserDTO newUserDTO) {
         User user = User.builder()
                 .email(newUserDTO.getEmail())
                 .password(newUserDTO.getPassword())
@@ -53,12 +53,13 @@ public class UserService {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);
             userDao.create(user);
+            return true;
         } catch (DaoException e) {
             throw new EmailNotUniqueException();
         }
     }
 
-    public void updateUser(UserDTO userDTO) {
+    public boolean updateUser(UserDTO userDTO) {
         User user = User.builder()
                 .id(userDTO.getId())
                 .email(userDTO.getEmail())
@@ -75,26 +76,29 @@ public class UserService {
             }
             userDao.update(user);
             log.info("updated userservice");
+            return true;
         } catch (DaoException e) {
             throw new EmailNotUniqueException();
         }
     }
 
-    public void  banUser(long id) {
+    public boolean  banUser(long id) {
         try (DaoConnection connection = daoFactory.getConnection()){
             UserDao userDao = daoFactory.createUserDao(connection);
             userDao.updateEnabled(id, false);
+            return true;
         } catch (DaoException e) {
-
+            return false;
         }
     }
 
-    public void unbanUser(long id) {
+    public boolean unbanUser(long id) {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);
             userDao.updateEnabled(id, true);
+            return true;
         } catch (DaoException e) {
-
+            return false;
         }
     }
 
@@ -107,6 +111,13 @@ public class UserService {
         }
     }
 
+    /**
+     *
+     * @param page number of specific page in a query
+     * @param size amount of items on the page
+     * @return list of specific orders that we get with a query,
+     * parameters of which we provide
+     */
     public List<User> findAllUsersPageable(int page, int size) {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);

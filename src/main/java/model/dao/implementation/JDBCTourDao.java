@@ -45,7 +45,7 @@ public class JDBCTourDao implements TourDao {
     }
 
     @Override
-    public void create(Tour tour) {
+    public boolean create(Tour tour) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("tour.create"), Statement.RETURN_GENERATED_KEYS)) {
             fillTourStatement(tour, preparedStatement);
@@ -54,6 +54,7 @@ public class JDBCTourDao implements TourDao {
             if (resultSet.next()) {
                 tour.setId(resultSet.getLong(1));
             }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DaoException(e);

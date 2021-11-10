@@ -9,7 +9,7 @@ import model.entity.enums.TourType;
 public class TourDTO {
     private long id;
     @NotBlank
-    @Size(min = 5, max = 100, message = "{validation.tour.name}")
+    @Size(min = 4, max = 100, message = "{validation.tour.name}")
     private String name;
     private TourType tourType;
     private HotelType hotelType;

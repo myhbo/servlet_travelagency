@@ -95,7 +95,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public void create(User user) {
+    public boolean create(User user) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("user.create"), Statement.RETURN_GENERATED_KEYS)) {
             fillUserStatement(user, preparedStatement);
@@ -112,12 +112,13 @@ public class JDBCUserDao implements UserDao {
                     rolesPS.setString(2, role.name());
                     rolesPS.executeUpdate();
                 }
+                return true;
             } catch (SQLException e) {
                 e.printStackTrace();
                 throw new DaoException(e);
             }
         } catch (SQLException e) {
-
+            return false;
         }
 
     }

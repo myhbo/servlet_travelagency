@@ -59,11 +59,12 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public void create(Order order) {
+    public boolean create(Order order) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("order.create"))) {
             fillOrderStatement(order, preparedStatement);
             preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DaoException(e);
