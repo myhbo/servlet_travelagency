@@ -37,7 +37,7 @@ public class OrderMarkConfirmed implements Command {
             return "/404.jsp";
         }
         orderService.markOrderConfirmed(orderId);
-
+        log.info("confirmed order with ID " + orderId);
         return "redirect:/orders" +
                 "?page=" + page +
                 "&size=" + size +

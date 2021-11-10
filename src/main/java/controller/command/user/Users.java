@@ -17,27 +17,32 @@ public class Users implements Command {
     public String execute(HttpServletRequest request) {
         int page = 0;
         int size = 5;
-        if (request.getParameter("page") != null) {
-            try {
+        String columnToSort = "id";
+        String directionToSort = "DESC";
+        try {
+            if (request.getParameter("page") != null)
                 page = Integer.parseInt(request.getParameter("page"));
-            } catch (NumberFormatException e) {
-
-            }
-        }
-        if (request.getParameter("size") != null) {
-            try {
+            if (request.getParameter("size") != null)
                 size = Integer.parseInt(request.getParameter("size"));
-            } catch (NumberFormatException e) {
-
-            }
-
+            if (request.getParameter("sortCol") != null)
+                columnToSort = request.getParameter("sortCol");
+            if (request.getParameter("sortDir") != null)
+                directionToSort = request.getParameter("sortDir");
+        } catch (NumberFormatException e) {
+            return "404.jsp";
         }
+
         long userRecords = userService.getUsersRecords();
         long userPages = (long) Math.ceil((double) userRecords / size);
-        request.setAttribute("users", userService.findAllUsersPageable(page, size));
+        request.setAttribute("users", userService.findAllUsersPageable(page,
+                size,
+                columnToSort,
+                directionToSort));
         request.setAttribute("currentPage", page);
         request.setAttribute("pageSize", size);
         request.setAttribute("totalPages", userPages);
+        request.setAttribute("sortCol", columnToSort);
+        request.setAttribute("sortDir", directionToSort);
         request.setAttribute("pagerSizes", new int[] {5, 10, 50, 100});
         return "/users.jsp";
     }

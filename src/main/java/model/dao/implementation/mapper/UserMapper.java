@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+
 public class UserMapper implements ObjectMapper<User>{
     @Override
     public User getFromResultSet(ResultSet resultSet) throws SQLException {

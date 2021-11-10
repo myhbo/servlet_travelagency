@@ -39,7 +39,7 @@ public class TourToggleHot implements Command {
             return "/500.jsp";
         }
         tourService.toggleHot(id);
-
+        log.info("tour with id " + id + " is now hot");
         return "redirect:/tours" +
                 "?page=" + page +
                 "&size=" + size +

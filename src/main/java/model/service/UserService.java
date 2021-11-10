@@ -2,12 +2,12 @@ package model.service;
 
 import controller.dto.NewUserDTO;
 import controller.dto.UserDTO;
+import exception.DaoException;
 import exception.EmailNotUniqueException;
 import model.dao.DaoConnection;
 import model.dao.DaoFactory;
 import model.dao.UserDao;
 import model.entity.User;
-import exception.DaoException;
 import model.entity.enums.Roles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,6 +53,7 @@ public class UserService {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);
             userDao.create(user);
+            log.info("user added");
             return true;
         } catch (DaoException e) {
             throw new EmailNotUniqueException();
@@ -75,7 +76,7 @@ public class UserService {
                 user.setPassword(remainingPassword);
             }
             userDao.update(user);
-            log.info("updated userservice");
+            log.info("user updated");
             return true;
         } catch (DaoException e) {
             throw new EmailNotUniqueException();
@@ -86,6 +87,7 @@ public class UserService {
         try (DaoConnection connection = daoFactory.getConnection()){
             UserDao userDao = daoFactory.createUserDao(connection);
             userDao.updateEnabled(id, false);
+            log.info("user banned");
             return true;
         } catch (DaoException e) {
             return false;
@@ -96,6 +98,7 @@ public class UserService {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);
             userDao.updateEnabled(id, true);
+            log.info("user unbanned");
             return true;
         } catch (DaoException e) {
             return false;
@@ -118,10 +121,13 @@ public class UserService {
      * @return list of specific orders that we get with a query,
      * parameters of which we provide
      */
-    public List<User> findAllUsersPageable(int page, int size) {
+    public List<User> findAllUsersPageable(int page,
+                                           int size,
+                                           String columnToSort,
+                                           String directionToSort) {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);
-            return userDao.findAllPageable(page, size);
+            return userDao.findAllPageable(page, size, columnToSort, directionToSort);
 
         } catch (DaoException e) {
             return Collections.emptyList();

@@ -5,9 +5,9 @@ import model.dao.*;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
+
 public class JDBCDaoFactory extends DaoFactory {
     private final DataSource dataSource = ConnectionPoolHolder.getDataSource();
-
 
     @Override
     public UserDao createUserDao(DaoConnection connection) {

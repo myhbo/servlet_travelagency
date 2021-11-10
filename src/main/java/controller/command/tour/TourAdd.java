@@ -1,13 +1,10 @@
 package controller.command.tour;
 
 import controller.command.Command;
-import controller.dto.OrderDTO;
 import controller.dto.TourDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import model.entity.Order;
-import model.entity.Tour;
 import model.entity.enums.HotelType;
 import model.entity.enums.TourType;
 import model.service.TourService;
@@ -75,11 +72,9 @@ public class TourAdd implements Command {
 
         Set<ConstraintViolation<TourDTO>> violations = VALIDATOR.validate(tourDTO);
 
-        log.info("try to set discount");
-
         if (violations.isEmpty()) {
             tourService.addTour(tourDTO);
-            log.info("tour created command");
+            log.info("tour created");
             return "redirect:/tours";
         } else {
             request.setAttribute("errors", violations);

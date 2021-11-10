@@ -27,7 +27,7 @@ public class OrderAdd implements Command {
         }
 
         orderService.createOrder(user.getId(), tourId);
-
+        log.info("created order from user " + user.getEmail() + " with tour ID" + tourId);
         return "redirect:/user-cabinet";
     }
 }

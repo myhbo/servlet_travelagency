@@ -2,7 +2,6 @@ package model.service;
 
 import controller.dto.OrderDTO;
 import exception.DaoException;
-import jakarta.validation.Valid;
 import model.dao.*;
 import model.entity.Order;
 import model.entity.Tour;
@@ -13,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
+
 
 public class OrderService {
     private static final Logger log = LogManager.getLogger();
@@ -65,8 +65,6 @@ public class OrderService {
             TourDao tourDao = daoFactory.createTourDao(connection);
             OrderDao orderDao = daoFactory.createOrderDao(connection);
 
-            //connection.beginTransaction();
-
             User user = userDao.findById(userId).orElseThrow(IllegalArgumentException::new);
             Tour tour = tourDao.findById(tourId).orElseThrow(IllegalArgumentException::new);
             Order order = Order.builder()
@@ -79,7 +77,6 @@ public class OrderService {
 
             orderDao.create(order);
             return true;
-            //connection.commit();
         } catch (DaoException e) {
             e.printStackTrace();
             return false;
@@ -95,19 +92,14 @@ public class OrderService {
             OrderDao orderDao = daoFactory.createOrderDao(connection);
             UserDao userDao = daoFactory.createUserDao(connection);
 
-            //connection.beginTransaction();
-
             Order order = findOrderById(id);
             User user = order.getUser();
 
             order.setStatus(OrderStatus.CONFIRMED);
 
-
             orderDao.update(order);
             userDao.update(user);
 
-
-            //connection.commit();
         } catch (DaoException e) {
         }
     }
@@ -120,15 +112,11 @@ public class OrderService {
         try (DaoConnection connection = daoFactory.getConnection()) {
             OrderDao orderDao = daoFactory.createOrderDao(connection);
 
-            //connection.beginTransaction();
-
             Order order = findOrderById(id);
             order.setStatus(OrderStatus.REJECTED);
             orderDao.update(order);
 
-            //connection.commit();
         } catch (DaoException e) {
-
         }
     }
 
@@ -170,7 +158,7 @@ public class OrderService {
 
             orderDao.update(orderBuilder);
             userDao.update(user);
-            log.info("discount set in order service");
+            log.info("discount set");
             return true;
         } catch (Exception e) {
             return false;

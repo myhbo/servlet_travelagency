@@ -1,7 +1,6 @@
 package model.dao.implementation;
 
 import exception.DaoException;
-import model.dao.DaoConnection;
 import model.dao.UserDao;
 import model.dao.implementation.mapper.OrderMapper;
 import model.dao.implementation.mapper.TourMapper;
@@ -13,9 +12,9 @@ import model.entity.enums.Roles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.management.relation.Role;
 import java.sql.*;
 import java.util.*;
+
 
 public class JDBCUserDao implements UserDao {
     public static final Logger log = LogManager.getLogger();
@@ -188,15 +187,23 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public List<User> findAllPageable(int page, int size) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
-                resourceBundle.getString("user.find.all.pageable"))) {
-            preparedStatement.setLong(1, size);
-            preparedStatement.setLong(2, (long) size * page);
-            ResultSet resultSet = preparedStatement.executeQuery();
+    public List<User> findAllPageable(int page,
+                                      int size,
+                                      String columnToSort,
+                                      String directionToSort) {
+        try (Statement statement = connection.createStatement()) {
+            String query = resourceBundle.getString("user.find.all.pageable")
+                    + " order by " + columnToSort
+                    + " " + directionToSort + " "
+                    + " limit " + size
+                    + " offset " + (long) size * page;
+            log.info("trying get tours");
+            ResultSet resultSet = statement.executeQuery(query);
+
             Map<Long, User> userMap = getUsersFromResultSet(resultSet);
 
             return new ArrayList<>(userMap.values());
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }

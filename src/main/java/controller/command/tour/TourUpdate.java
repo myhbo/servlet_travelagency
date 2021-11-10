@@ -3,7 +3,6 @@ package controller.command.tour;
 
 import controller.command.Command;
 import controller.dto.TourDTO;
-import exception.DaoException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -90,11 +89,11 @@ public class TourUpdate implements Command {
 
         Set<ConstraintViolation<TourDTO>> violations = VALIDATOR.validate(tourDTO);
 
-        log.info("try to set discount");
+
 
         if (violations.isEmpty()) {
             tourService.updateTour(id, tourDTO);
-
+            log.info("tour updated");
             return "redirect:/tours";
         } else {
             request.setAttribute("tourTypes", TourType.values());

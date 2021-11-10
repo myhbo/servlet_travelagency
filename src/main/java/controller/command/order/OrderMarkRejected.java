@@ -37,7 +37,7 @@ public class OrderMarkRejected implements Command {
             return "/404.jsp";
         }
         orderService.markOrderRejected(orderId);
-
+        log.info("rejected order with ID " + orderId);
         return "redirect:/orders" +
                 "?page=" + page +
                 "&size=" + size +

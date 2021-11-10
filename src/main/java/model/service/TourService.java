@@ -9,10 +9,8 @@ import model.entity.Tour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class TourService {
     private static final Logger log = LogManager.getLogger();
@@ -34,7 +32,7 @@ public class TourService {
                                            String directionToSort) {
         try (DaoConnection connection = daoFactory.getConnection()) {
             TourDao tourDao = daoFactory.createTourDao(connection);
-            log.info("trying get tours in service");
+            log.info("trying get tours");
             return tourDao.findAllPageable(page, size, columnToSort, directionToSort);
         } catch (DaoException e) {
             return Collections.emptyList();
@@ -62,12 +60,11 @@ public class TourService {
                 .build();
         try (DaoConnection connection = daoFactory.getConnection()) {
             TourDao tourDao = daoFactory.createTourDao(connection);
-
             tourDao.create(tour);
-            log.info("tour create service");
+            log.info("tour create");
             return true;
         } catch (DaoException e) {
-            log.info("tour cannot create service");
+            log.info("tour cannot create");
             return false;
         }
     }

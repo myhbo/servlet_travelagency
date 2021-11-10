@@ -1,9 +1,7 @@
 package controller.command.user;
 
 import controller.command.Command;
-import controller.dto.TourDTO;
 import controller.dto.UserDTO;
-import exception.DaoException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -18,6 +16,7 @@ import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class UserUpdate implements Command {
     private static final Logger log = LogManager.getLogger();

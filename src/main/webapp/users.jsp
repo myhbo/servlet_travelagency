@@ -20,12 +20,34 @@
         <table class="table">
             <thead>
             <tr>
-                <th><fmt:message key="users.id"/></th>
-                <th><fmt:message key="users.email"/></th>
-                <th><fmt:message key="users.fullname"/></th>
-                <th><fmt:message key="users.role"/></th>
-                <th  class="text-center"><fmt:message key="users.update"/></th>
-                <th><fmt:message key="users.status"/></th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/app/users?page=${requestScope.currentPage}&size=${requestScope.pageSize}&sortCol=${'id'}&sortDir=${(requestScope.sortDir != 'ASC') ? 'ASC' : 'DESC'}">
+                        <fmt:message key="users.id"/>
+                    </a>
+                </th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/app/users?page=${requestScope.currentPage}&size=${requestScope.pageSize}&sortCol=${'email'}&sortDir=${(requestScope.sortDir != 'ASC') ? 'ASC' : 'DESC'}">
+                        <fmt:message key="users.email"/>
+                    </a>
+                </th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/app/users?page=${requestScope.currentPage}&size=${requestScope.pageSize}&sortCol=${'full_name'}&sortDir=${(requestScope.sortDir != 'ASC') ? 'ASC' : 'DESC'}">
+                        <fmt:message key="users.fullname"/>
+                    </a>
+                </th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/app/users?page=${requestScope.currentPage}&size=${requestScope.pageSize}&sortCol=${'user_roles.role'}&sortDir=${(requestScope.sortDir != 'ASC') ? 'ASC' : 'DESC'}">
+                        <fmt:message key="users.role"/>
+                    </a>
+                </th>
+                <th  class="text-center">
+                    <fmt:message key="users.update"/>
+                </th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/app/users?page=${requestScope.currentPage}&size=${requestScope.pageSize}&sortCol=${'enabled'}&sortDir=${(requestScope.sortDir != 'ASC') ? 'ASC' : 'DESC'}">
+                        <fmt:message key="users.status"/>
+                    </a>
+                </th>
             </tr>
             </thead>
             <tbody>

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import model.entity.enums.HotelType;
 import model.entity.enums.TourType;
 
+
 public class TourDTO {
     private long id;
     @NotBlank
