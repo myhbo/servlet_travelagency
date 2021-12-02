@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 public class OrderMarkConfirmed implements Command {
     private static final Logger log = LogManager.getLogger();
 

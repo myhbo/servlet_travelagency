@@ -19,7 +19,7 @@ public class UserDTO {
     @NotBlank
     @Size(max = 50, message = "{validation.user.full.name}")
     private String fullName;
-    private Set<Roles> roles;
+    private Roles role;
 
 
     public static Builder builder() {
@@ -31,7 +31,7 @@ public class UserDTO {
         private String email;
         private String password;
         private String fullName;
-        private Set<Roles> roles;
+        private Roles role;
 
         public Builder id(long id) {
             this.id = id;
@@ -51,8 +51,8 @@ public class UserDTO {
             this.fullName = fullName;
             return this;
         }
-        public Builder roles(Set<Roles> roles) {
-            this.roles = roles;
+        public Builder role(Roles role) {
+            this.role = role;
             return this;
         }
 
@@ -64,7 +64,7 @@ public class UserDTO {
             UserDTO.setEmail(email);
             UserDTO.setPassword(password);
             UserDTO.setFullName(fullName);
-            UserDTO.setRole(roles);
+            UserDTO.setRole(role);
             return UserDTO;
         }
     }
@@ -88,12 +88,12 @@ public class UserDTO {
         this.id = id;
     }
 
-    public Set<Roles> getRole() {
-        return roles;
+    public Roles getRole() {
+        return role;
     }
 
-    public void setRole(Set<Roles> roles) {
-        this.roles = roles;
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
     public void setPassword(String password) {

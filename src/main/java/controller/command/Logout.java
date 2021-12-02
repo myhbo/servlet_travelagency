@@ -5,14 +5,13 @@ import javax.servlet.http.HttpSession;
 
 
 public class Logout implements Command{
-    public Logout() {
-    }
-
     @Override
     public String execute(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.invalidate();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
         request.setAttribute("success", true);
-        return "login.jsp";
+        return "redirect:/login.jsp";
     }
 }

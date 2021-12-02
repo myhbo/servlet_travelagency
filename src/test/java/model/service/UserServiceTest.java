@@ -5,9 +5,6 @@ import controller.dto.UserDTO;
 import model.dao.UserDao;
 import model.entity.User;
 import model.entity.enums.Roles;
-import model.service.UserService;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -47,7 +43,7 @@ public class UserServiceTest {
                 .email("polo@tests.com")
                 .password("admin")
                 .fullName("Ihor Vaschenko")
-                .roles(Collections.singleton(Roles.USER))
+                .role(Roles.USER)
                 .enabled(false)
                 .build();
         return user;
@@ -70,7 +66,7 @@ public class UserServiceTest {
                 .email("polo@tests.com")
                 .password("admin")
                 .fullName("Ihor Vaschenko")
-                .roles(Collections.singleton(Roles.MANAGER))
+                .role(Roles.MANAGER)
                 .build();
         assertTrue(userService.updateUser(userDTO));
 

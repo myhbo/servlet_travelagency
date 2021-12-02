@@ -1,10 +1,7 @@
 package model.service;
 
 import controller.dto.OrderDTO;
-import controller.dto.TourDTO;
 import model.dao.OrderDao;
-import model.dao.TourDao;
-import model.entity.Order;
 import model.entity.Tour;
 import model.entity.User;
 import model.entity.enums.HotelType;
@@ -54,7 +51,7 @@ public class OrderServiceTest {
                 .email("polo@tests.com")
                 .password("admin")
                 .fullName("Ihor Vaschenko")
-                .roles(Collections.singleton(Roles.USER))
+                .role(Roles.USER)
                 .enabled(false)
                 .build();
         return user;

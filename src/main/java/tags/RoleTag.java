@@ -16,7 +16,7 @@ public class RoleTag extends TagSupport {
     @Override
     public int doStartTag() {
         User user = (User) pageContext.getSession().getAttribute("user");
-        if (user != null && (user.getRole().contains(Roles.ADMIN) || user.getRole().contains(Roles.valueOf(role))))
+        if (user != null && (user.getRole().equals(Roles.ADMIN) || user.getRole().equals(Roles.valueOf(role))))
             return EVAL_BODY_INCLUDE;
         else
             return SKIP_BODY;

@@ -60,16 +60,6 @@ public class JDBCUserDao implements UserDao {
 
 
         for (User user : userMap.values()) {
-            try (PreparedStatement userRolesPS = connection.prepareStatement(
-                    resourceBundle.getString("user.get.role"))) {
-                userRolesPS.setLong(1, user.getId());
-                ResultSet userRolesRS = userRolesPS.executeQuery();
-
-                while (userRolesRS.next()) {
-                    Roles role = Roles.valueOf(userRolesRS.getString("user_roles.role"));
-                    user.getRole().add(role);
-                }
-            }
             try (PreparedStatement ordersPS = connection.prepareStatement(
                     resourceBundle.getString("user.join.orders.tours"))) {
                 ordersPS.setLong(1, user.getId());
@@ -99,24 +89,15 @@ public class JDBCUserDao implements UserDao {
                 resourceBundle.getString("user.create"), Statement.RETURN_GENERATED_KEYS)) {
             fillUserStatement(user, preparedStatement);
             preparedStatement.setBoolean(4, user.isEnabled());
+            preparedStatement.setString(5, user.getRole().name());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 user.setId(resultSet.getLong(1));
             }
-            try (PreparedStatement rolesPS = connection.prepareStatement(
-                    resourceBundle.getString("role.create"))) {
-                for (Roles role : user.getRole()) {
-                    rolesPS.setLong(1, user.getId());
-                    rolesPS.setString(2, role.name());
-                    rolesPS.executeUpdate();
-                }
-                return true;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                throw new DaoException(e);
-            }
+            return true;
         } catch (SQLException e) {
+            log.info("cant create");
             return false;
         }
 
@@ -127,22 +108,10 @@ public class JDBCUserDao implements UserDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("user.update"))) {
             fillUserStatement(user, preparedStatement);
-            preparedStatement.setLong(4, user.getId());
+            preparedStatement.setLong(5, user.getId());
+            log.info(preparedStatement);
             preparedStatement.executeUpdate();
 
-            try (PreparedStatement roleDeletePS = connection.prepareStatement(
-                resourceBundle.getString("role.delete.by.id"))) {
-                roleDeletePS.setLong(1, user.getId());
-                roleDeletePS.executeUpdate();
-            } try (PreparedStatement roleCreatePS = connection.prepareStatement(
-                    resourceBundle.getString("role.create"))){
-                for (Roles role : user.getRole()) {
-                    roleCreatePS.setLong(1, user.getId());
-                    roleCreatePS.setString(2, role.name());
-                    roleCreatePS.executeUpdate();
-                }
-
-            }
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -197,9 +166,7 @@ public class JDBCUserDao implements UserDao {
                     + " " + directionToSort + " "
                     + " limit " + size
                     + " offset " + (long) size * page;
-            log.info("trying get tours");
             ResultSet resultSet = statement.executeQuery(query);
-
             Map<Long, User> userMap = getUsersFromResultSet(resultSet);
 
             return new ArrayList<>(userMap.values());
@@ -229,5 +196,6 @@ public class JDBCUserDao implements UserDao {
         preparedStatement.setString(1, user.getEmail());
         preparedStatement.setString(2, user.getPassword());
         preparedStatement.setString(3, user.getFullName());
+        preparedStatement.setString(4, user.getRole().name());
     }
 }

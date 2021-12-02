@@ -1,5 +1,6 @@
 package controller.command;
 
+import configuration.BCryptConfig;
 import model.entity.User;
 import model.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -8,10 +9,19 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
+import java.util.function.Function;
 
 
 public class Login implements Command {
     private static final Logger log = LogManager.getLogger();
+
+    private static final BCryptConfig bcrypt = new BCryptConfig(10);
+    private String[] mutableHash = new String[1];
+    Function<String, Boolean> update = hash -> { mutableHash[0] = hash; return true; };
+
+    public static boolean verifyAndUpdateHash(String password, String hash, Function<String, Boolean> updateFunc) {
+        return bcrypt.verifyAndUpdateHash(password, hash, updateFunc);
+    }
 
     private final UserService userService;
 
@@ -44,7 +54,7 @@ public class Login implements Command {
             return "/login.jsp";
         }
 
-        if (user.getPassword().equals(password)) {
+        if (bcrypt.verifyAndUpdateHash(password, user.getPassword(), update)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             return "redirect:/index";

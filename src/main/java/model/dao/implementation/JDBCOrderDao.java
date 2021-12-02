@@ -148,10 +148,10 @@ public class JDBCOrderDao implements OrderDao {
                 while (usersResultSet.next()) {
                     User user = userMapper.getFromResultSet(usersResultSet);
                     user = userMapper.makeUnique(userMap, user);
-                    if (usersResultSet.getString("user_roles.role") != null) {
+                    if (usersResultSet.getString("users.role") != null) {
                         Roles role = Roles
-                                .valueOf(usersResultSet.getString("user_roles.role"));
-                        user.getRole().add(role);
+                                .valueOf(usersResultSet.getString("users.role"));
+                        user.setRole(role);
                     }
                     if (user.getId() != 0) {
                         order.setUser(user);

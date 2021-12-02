@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+
 public class TourAdd implements Command {
     public static final Logger log = LogManager.getLogger();
     private final TourService tourService;

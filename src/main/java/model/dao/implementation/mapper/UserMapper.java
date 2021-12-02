@@ -1,6 +1,7 @@
 package model.dao.implementation.mapper;
 
 import model.entity.User;
+import model.entity.enums.Roles;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ public class UserMapper implements ObjectMapper<User>{
         user.setPassword(resultSet.getString("users.password"));
         user.setFullName(resultSet.getString("users.full_name"));
         user.setEnabled(resultSet.getBoolean("users.enabled"));
+        user.setRole(Roles.valueOf(resultSet.getString("users.role")));
         return user;
     }
 

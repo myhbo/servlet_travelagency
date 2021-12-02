@@ -26,8 +26,9 @@ public class UserService {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);
             return userDao.findById(id).orElseThrow(IllegalArgumentException::new);
-        } catch (DaoException e) {
 
+        } catch (DaoException e) {
+            log.error("cant find user by id");
         }
         return null;
     }
@@ -48,7 +49,7 @@ public class UserService {
                 .password(newUserDTO.getPassword())
                 .fullName(newUserDTO.getFullName())
                 .enabled(true)
-                .roles(Collections.singleton(Roles.USER))
+                .role(Roles.USER)
                 .build();
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDao userDao = daoFactory.createUserDao(connection);
@@ -66,9 +67,9 @@ public class UserService {
                 .email(userDTO.getEmail())
                 .password(userDTO.getPassword())
                 .fullName(userDTO.getFullName())
-                .roles(userDTO.getRole())
+                .role(userDTO.getRole())
                 .build();
-
+        log.info("user builder done");
         try (DaoConnection connection = daoFactory.getConnection()){
             UserDao userDao = daoFactory.createUserDao(connection);
             if (userDTO.getPassword().isEmpty()) {
@@ -130,6 +131,7 @@ public class UserService {
             return userDao.findAllPageable(page, size, columnToSort, directionToSort);
 
         } catch (DaoException e) {
+            log.error("cant get all users pageable");
             return Collections.emptyList();
         }
     }

@@ -10,7 +10,7 @@ public class User {
     private String password;
     private String fullName;
     private boolean enabled;
-    private Set<Roles> roles = new HashSet<>();
+    private Roles role;
     private List<Order> orders = new ArrayList<>();
 
     public static Builder builder() {
@@ -22,7 +22,7 @@ public class User {
         private String password;
         private String fullName;
         private boolean enabled;
-        private Set<Roles> roles = new HashSet<>();
+        private Roles role;
 
         public Builder id(long id) {
             this.id = id;
@@ -49,8 +49,8 @@ public class User {
             return this;
         }
 
-        public Builder roles(Set<Roles> roles) {
-            this.roles = roles;
+        public Builder role(Roles role) {
+            this.role = role;
             return this;
         }
 
@@ -61,7 +61,7 @@ public class User {
             user.setPassword(password);
             user.setFullName(fullName);
             user.setEnabled(enabled);
-            user.setRole(roles);
+            user.setRole(role);
             return user;
         }
     }
@@ -106,12 +106,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Set<Roles> getRole() {
-        return roles;
+    public Roles getRole() {
+        return role;
     }
 
-    public void setRole(Set<Roles> roles) {
-        this.roles = roles;
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
     public List<Order> getOrders() {
@@ -127,11 +127,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && enabled == user.enabled && email.equals(user.email) && password.equals(user.password) && fullName.equals(user.fullName) && roles.equals(user.roles);
+        return id == user.id && enabled == user.enabled && email.equals(user.email) && password.equals(user.password) && fullName.equals(user.fullName) && role.equals(user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, fullName, enabled, roles);
+        return Objects.hash(id, email, password, fullName, enabled, role);
     }
 }

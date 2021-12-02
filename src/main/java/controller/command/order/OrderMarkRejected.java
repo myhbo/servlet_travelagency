@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 public class OrderMarkRejected implements Command {
     private static final Logger log = LogManager.getLogger();
 

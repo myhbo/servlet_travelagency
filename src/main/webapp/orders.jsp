@@ -236,7 +236,7 @@
                                 </c:if>
                                 <c:if test="${c != requestScope.pageSize}">
                                     <a class="page-link"
-                                       href="${pageContext.request.contextPath}/app/orders?page=${requestScope.currentPage}&size=${c}&sortCol=${requestScope.sortCol}&sortDir=${requestScope.sortDir}">
+                                       href="${pageContext.request.contextPath}/app/orders?page=${0}&size=${c}&sortCol=${requestScope.sortCol}&sortDir=${requestScope.sortDir}">
                                             ${c}
                                     </a>
                                 </c:if>

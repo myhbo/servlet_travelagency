@@ -113,7 +113,7 @@ public class JDBCTourDao implements TourDao {
                     + " " + directionToSort + " "
                     + " limit " + size
                     + " offset " + (long) size * page;
-            log.info("trying get tours in dao " + query);
+            log.info("trying get tours in dao");
             ResultSet resultSet = statement.executeQuery(query);
 
             Map<Long, Tour> tourMap = getToursFromResultSet(resultSet);

@@ -1,5 +1,6 @@
 package controller.command.user;
 
+import configuration.BCryptConfig;
 import controller.command.Command;
 import controller.dto.UserDTO;
 import jakarta.validation.ConstraintViolation;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 public class UserUpdate implements Command {
     private static final Logger log = LogManager.getLogger();
+    private static final BCryptConfig bcrypt = new BCryptConfig(10);
 
     private final UserService userService;
     private ResourceBundle resourceBundle;
@@ -53,7 +55,7 @@ public class UserUpdate implements Command {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String fullName = request.getParameter("fullName");
-        String[] roles = request.getParameterValues("roles");
+        String roles = request.getParameter("roles");
 
         if (email == null && password == null && fullName == null && roles == null) {
             User user = userService.findUserById(id);
@@ -65,9 +67,9 @@ public class UserUpdate implements Command {
         UserDTO userDTO = UserDTO.builder()
                 .id(id)
                 .email(email)
-                .password(password)
+                .password(bcrypt.hash(password))
                 .fullName(fullName)
-                .roles(getRoles(roles))
+                .role(Roles.valueOf(roles))
                 .build();
 
         final Validator VALIDATOR =
@@ -80,8 +82,6 @@ public class UserUpdate implements Command {
 
         Set<ConstraintViolation<UserDTO>> violations = VALIDATOR.validate(userDTO);
 
-        log.info("try to set discount");
-
         if (violations.isEmpty()) {
             userService.updateUser(userDTO);
 
@@ -91,15 +91,6 @@ public class UserUpdate implements Command {
             request.setAttribute("roles", Roles.values());
             request.setAttribute("errors", violations);
             return "/user-update.jsp";
-        }
-    }
-    private Set<Roles> getRoles(String[] roles) {
-        if (roles != null) {
-            return Arrays.stream(roles)
-                    .map(Roles::valueOf)
-                    .collect(Collectors.toSet());
-        } else {
-            return Collections.emptySet();
         }
     }
 }

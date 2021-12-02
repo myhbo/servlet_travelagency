@@ -1,5 +1,6 @@
 package controller.command;
 
+import configuration.BCryptConfig;
 import controller.dto.NewUserDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 public class Registration implements Command{
     private static final Logger log = LogManager.getLogger();
+    private static final BCryptConfig bcrypt = new BCryptConfig(10);
 
     private final UserService userService;
     private ResourceBundle resourceBundle;
@@ -50,7 +52,7 @@ public class Registration implements Command{
 
         NewUserDTO newUserDTO = NewUserDTO.builder()
                 .email(email)
-                .password(password)
+                .password(bcrypt.hash(password))
                 .fullName(fullName)
                 .build();
 
