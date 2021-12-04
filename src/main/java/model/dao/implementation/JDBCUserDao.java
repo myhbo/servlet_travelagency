@@ -88,8 +88,8 @@ public class JDBCUserDao implements UserDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("user.create"), Statement.RETURN_GENERATED_KEYS)) {
             fillUserStatement(user, preparedStatement);
-            preparedStatement.setBoolean(4, user.isEnabled());
-            preparedStatement.setString(5, user.getRole().name());
+            preparedStatement.setBoolean(5, user.isEnabled());
+            preparedStatement.setString(4, user.getRole().name());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -97,7 +97,7 @@ public class JDBCUserDao implements UserDao {
             }
             return true;
         } catch (SQLException e) {
-            log.info("cant create");
+            log.info("cant create" + e.getMessage());
             return false;
         }
 
@@ -194,8 +194,8 @@ public class JDBCUserDao implements UserDao {
     private void fillUserStatement(User user, PreparedStatement preparedStatement)
             throws SQLException {
         preparedStatement.setString(1, user.getEmail());
-        preparedStatement.setString(2, user.getPassword());
-        preparedStatement.setString(3, user.getFullName());
+        preparedStatement.setString(2, user.getFullName());
+        preparedStatement.setString(3, user.getPassword());
         preparedStatement.setString(4, user.getRole().name());
     }
 }

@@ -10,10 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -102,11 +99,9 @@ public class AuthenticationFilter implements Filter {
             }
             return;
         }
-        List<String> requestedLink = user.getRole()
-                .stream()
-                .flatMap(role -> rolesMap.get(role).stream())
-                .distinct()
-                .collect(Collectors.toList());
+        Roles userRole = user.getRole();
+        List<String> requestedLink = new ArrayList<>(rolesMap.get(userRole));
+
         if (requestedLink.contains(requestURI)) {
             filterChain.doFilter(request, response);
         } else {
@@ -114,10 +109,5 @@ public class AuthenticationFilter implements Filter {
             request.getRequestDispatcher("/403.jsp").forward(request, response);
             log.info(user.getEmail() + "try to access forbidden page");
         }
-    }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
     }
 }
