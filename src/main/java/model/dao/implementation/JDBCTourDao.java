@@ -57,19 +57,19 @@ public class JDBCTourDao implements TourDao {
             }
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new DaoException(e);
         }
     }
 
     private void fillTourStatement(Tour tour, PreparedStatement preparedStatement)
             throws SQLException {
-        preparedStatement.setString(1, tour.getName());
-        preparedStatement.setString(2, tour.getTourType().name());
-        preparedStatement.setString(3, tour.getHotelType().name());
-        preparedStatement.setInt(4, tour.getGroupSize());
+        preparedStatement.setString(4, tour.getName());
+        preparedStatement.setString(6, tour.getTourType().name());
+        preparedStatement.setString(2, tour.getHotelType().name());
+        preparedStatement.setInt(1, tour.getGroupSize());
         preparedStatement.setDouble(5, tour.getPrice());
-        preparedStatement.setBoolean(6, tour.isHot());
+        preparedStatement.setBoolean(3, tour.isHot());
 
     }
 
@@ -77,12 +77,12 @@ public class JDBCTourDao implements TourDao {
     public void update(Tour tour) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("tour.update"))) {
-            preparedStatement.setString(1, tour.getName());
-            preparedStatement.setString(2, tour.getTourType().name());
-            preparedStatement.setString(3, tour.getHotelType().name());
-            preparedStatement.setInt(4, tour.getGroupSize());
+            preparedStatement.setString(4, tour.getName());
+            preparedStatement.setString(6, tour.getTourType().name());
+            preparedStatement.setString(2, tour.getHotelType().name());
+            preparedStatement.setInt(1, tour.getGroupSize());
             preparedStatement.setDouble(5, tour.getPrice());
-            preparedStatement.setLong(6, tour.getId());
+            preparedStatement.setLong(3, tour.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,12 +108,14 @@ public class JDBCTourDao implements TourDao {
                                       String columnToSort,
                                       String directionToSort) {
         try (Statement statement = connection.createStatement()) {
+
+
             String query = resourceBundle.getString("tour.find.all.pageable")
                     + " order by " + columnToSort
                     + " " + directionToSort + " "
                     + " limit " + size
                     + " offset " + (long) size * page;
-            log.info("trying get tours in dao");
+
             ResultSet resultSet = statement.executeQuery(query);
 
             Map<Long, Tour> tourMap = getToursFromResultSet(resultSet);

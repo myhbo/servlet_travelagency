@@ -78,7 +78,7 @@ public class OrderService {
             orderDao.create(order);
             return true;
         } catch (DaoException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return false;
         }
     }

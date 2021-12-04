@@ -45,14 +45,16 @@ public class JDBCOrderDao implements OrderDao {
                                        int size,
                                        String columnToSort,
                                        String directionToSort) {
-        try (Statement st = connection.createStatement()) {
-            String query = resourceBundle.getString("order.find.all.pageable") +
-                    " order by " + columnToSort +
-                    " " + directionToSort +
-                    " limit " + size +
-                    " offset " + (long) size * page;
-            ResultSet rs = st.executeQuery(query);
-            Map<Long, Order> tourMap = getOrdersFromResultSet(rs);
+        try (Statement statement = connection.createStatement()) {
+            String query = resourceBundle.getString("order.find.all.pageable")
+                    + " order by " + columnToSort
+                    + " " + directionToSort + " "
+                    + " limit " + size
+                    + " offset " + (long) size * page;
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            Map<Long, Order> tourMap = getOrdersFromResultSet(resultSet);
             return new ArrayList<>(tourMap.values());
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -105,10 +107,10 @@ public class JDBCOrderDao implements OrderDao {
 
     private void fillOrderStatement(Order order, PreparedStatement preparedStatement)
             throws SQLException {
-        preparedStatement.setLong(1, order.getTour().getId());
-        preparedStatement.setLong(2, order.getUser().getId());
-        preparedStatement.setString(3, order.getStatus().name());
-        preparedStatement.setDouble(4, order.getPrice());
+        preparedStatement.setLong(3, order.getTour().getId());
+        preparedStatement.setLong(4, order.getUser().getId());
+        preparedStatement.setString(2, order.getStatus().name());
+        preparedStatement.setDouble(1, order.getPrice());
         preparedStatement.setDouble(5, order.getDiscount());
     }
 

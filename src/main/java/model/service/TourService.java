@@ -35,6 +35,7 @@ public class TourService {
             log.info("trying get tours");
             return tourDao.findAllPageable(page, size, columnToSort, directionToSort);
         } catch (DaoException e) {
+            log.error("cant get tours " + e.getMessage());
             return Collections.emptyList();
         }
     }

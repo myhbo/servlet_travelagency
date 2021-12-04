@@ -167,11 +167,13 @@ public class JDBCUserDao implements UserDao {
                     + " limit " + size
                     + " offset " + (long) size * page;
             ResultSet resultSet = statement.executeQuery(query);
+
             Map<Long, User> userMap = getUsersFromResultSet(resultSet);
 
             return new ArrayList<>(userMap.values());
 
         } catch (SQLException e) {
+            log.error("cant get users " + e.getMessage());
             throw new DaoException(e);
         }
     }
