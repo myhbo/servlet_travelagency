@@ -1,5 +1,6 @@
 package model.service;
 
+import configuration.BCryptConfig;
 import controller.dto.NewUserDTO;
 import controller.dto.UserDTO;
 import exception.DaoException;
@@ -69,13 +70,13 @@ public class UserService {
                 .fullName(userDTO.getFullName())
                 .role(userDTO.getRole())
                 .build();
-        log.info("user builder done");
         try (DaoConnection connection = daoFactory.getConnection()){
             UserDao userDao = daoFactory.createUserDao(connection);
             if (userDTO.getPassword().isEmpty()) {
                 String remainingPassword = (findUserById(userDTO.getId()).getPassword());
                 user.setPassword(remainingPassword);
             }
+
             userDao.update(user);
             log.info("user updated");
             return true;

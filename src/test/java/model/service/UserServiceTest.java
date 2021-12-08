@@ -2,6 +2,7 @@ package model.service;
 
 import controller.dto.NewUserDTO;
 import controller.dto.UserDTO;
+import exception.EmailNotUniqueException;
 import model.dao.UserDao;
 import model.entity.User;
 import model.entity.enums.Roles;
@@ -16,10 +17,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Collections;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 
@@ -40,36 +43,23 @@ public class UserServiceTest {
     public static User createUser() {
         User user = User.builder()
                 .id(1L)
-                .email("polo@tests.com")
-                .password("admin")
-                .fullName("Ihor Vaschenko")
-                .role(Roles.USER)
-                .enabled(false)
+                .email("adm@test.com")
+                .password("$2a$10$.uMZfw3bYOeobAkninKiXuZJPTpB3lWzD0xFpRRmYDU7yBkADi5KC")
+                .fullName("Bondarchuk Mykhailo")
+                .role(Roles.ADMIN)
+                .enabled(true)
                 .build();
         return user;
     }
 
     @Test
     public void shouldAddUser() {
-        when(userDao.create(any(User.class))).thenReturn(true);
         NewUserDTO user = NewUserDTO.builder()
-                .email("polo@tests.com")
-                .password("admin")
+                .email("admin@test.com")
+                .fullName("Bondarchuk Mykhailo")
+                .password("$2a$10$.uMZfw3bYOeobAkninKiXuZJPTpB3lWzD0xFpRRmYDU7yBkADi5KC")
                 .build();
         assertTrue(userService.addNewUser(user));
-    }
-
-    @Test
-    public void shouldUpdate() {
-        UserDTO userDTO = UserDTO.builder()
-                .id(1L)
-                .email("polo@tests.com")
-                .password("admin")
-                .fullName("Ihor Vaschenko")
-                .role(Roles.MANAGER)
-                .build();
-        assertTrue(userService.updateUser(userDTO));
-
     }
 
     @Test

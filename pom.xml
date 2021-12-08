@@ -97,9 +97,9 @@
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
     <dependency>
-      <groupId>org.mindrot</groupId>
-      <artifactId>jbcrypt</artifactId>
-      <version>0.4</version>
+      <groupId>it.cosenonjaviste</groupId>
+      <artifactId>tomcat-bcrypt</artifactId>
+      <version>1.0.0</version>
     </dependency>
 
   </dependencies>

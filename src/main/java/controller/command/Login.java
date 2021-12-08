@@ -37,10 +37,10 @@ public class Login implements Command {
             return "/login.jsp";
         }
 
-        log.info("Log in " + email);
+
 
         Optional<User> userOptional = userService.findUserByEmail(email);
-
+        log.info("Log in " + userOptional);
         if (!userOptional.isPresent()) {
             request.setAttribute("error", true);
             log.info("No user with email " + email);
@@ -51,12 +51,14 @@ public class Login implements Command {
 
         if (!user.isEnabled()) {
             request.setAttribute("error", true);
+            log.info(user + " is banned");
             return "/login.jsp";
         }
 
         if (bcrypt.verifyAndUpdateHash(password, user.getPassword(), update)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+            log.info(user + " logged in");
             return "redirect:/index";
 
         } else {

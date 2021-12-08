@@ -77,12 +77,12 @@ public class JDBCTourDao implements TourDao {
     public void update(Tour tour) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 resourceBundle.getString("tour.update"))) {
-            preparedStatement.setString(4, tour.getName());
-            preparedStatement.setString(6, tour.getTourType().name());
-            preparedStatement.setString(2, tour.getHotelType().name());
-            preparedStatement.setInt(1, tour.getGroupSize());
+            preparedStatement.setString(1, tour.getName());
+            preparedStatement.setString(2, tour.getTourType().name());
+            preparedStatement.setString(3, tour.getHotelType().name());
+            preparedStatement.setInt(4, tour.getGroupSize());
             preparedStatement.setDouble(5, tour.getPrice());
-            preparedStatement.setLong(3, tour.getId());
+            preparedStatement.setLong(6, tour.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

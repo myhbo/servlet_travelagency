@@ -1,6 +1,7 @@
 package configuration;
 
-import org.mindrot.jbcrypt.BCrypt;
+
+import it.cosenonjaviste.crypto.BCrypt;
 
 import java.util.function.Function;
 

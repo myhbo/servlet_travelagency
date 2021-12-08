@@ -40,7 +40,7 @@ public class OrderServiceTest {
                 .tourType(TourType.EXCURSION)
                 .hotelType(HotelType.RESORT)
                 .groupSize(1)
-                .price(10000D)
+                .price(100000D)
                 .isHot(false)
                 .build();
         return tour;
@@ -48,11 +48,11 @@ public class OrderServiceTest {
     public static User createUser() {
         User user = User.builder()
                 .id(1L)
-                .email("polo@tests.com")
-                .password("admin")
-                .fullName("Ihor Vaschenko")
-                .role(Roles.USER)
-                .enabled(false)
+                .email("admin@test.com")
+                .password("$2a$10$.uMZfw3bYOeobAkninKiXuZJPTpB3lWzD0xFpRRmYDU7yBkADi5KC")
+                .fullName("Bondarchuk Mykhailo")
+                .role(Roles.ADMIN)
+                .enabled(true)
                 .build();
         return user;
     }
@@ -60,9 +60,9 @@ public class OrderServiceTest {
     @Test
     public void setDiscount() {
         OrderDTO orderDTO = OrderDTO.builder()
-                .discount(50D)
+                .discount(17D)
                 .build();
-        assertTrue(orderService.setDiscount(1, orderDTO));
+        assertTrue(orderService.setDiscount(39, orderDTO));
     }
 
     @Test

@@ -134,4 +134,9 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, email, password, fullName, enabled, role);
     }
+
+    @Override
+    public String toString() {
+        return email;
+    }
 }

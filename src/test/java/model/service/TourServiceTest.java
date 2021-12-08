@@ -42,17 +42,17 @@ public class TourServiceTest {
                 .hotelType(HotelType.RESORT)
                 .groupSize(1)
                 .price(10000D)
-                .isHot(false)
+                .isHot(true)
                 .build();
         return tour;
     }
     public static TourDTO createTourDTO() {
         TourDTO tourDTO = TourDTO.builder()
-                .name("Марс")
+                .name("Горгани")
                 .tourType(TourType.EXCURSION)
-                .hotelType(HotelType.RESORT)
-                .groupSize(1)
-                .price(10000D)
+                .hotelType(HotelType.HOSTEL)
+                .groupSize(2)
+                .price(1500D)
                 .build();
         return tourDTO;
     }
